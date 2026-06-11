@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI in Healthcare &amp; Occupational Therapy — OSOT 551 Seminar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400;1,9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d1b1e;
+  --ink-soft:#142a2e;
+  --ink-deep:#091316;
+  --paper:#f3efe6;
+  --paper-dim:#cfc9ba;
+  --pulse:#37e0b0;
+  --pulse-dim:#1fae87;
+  --coral:#ff7a59;
+  --coral-dim:#e85d3c;
+  --slate:#7f9aa0;
+  --line:rgba(243,239,230,.14);
+  --line-dark:rgba(13,27,30,.12);
+  --maxw:1120px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:'Space Grotesk',sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--pulse)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--pulse);outline-offset:3px;border-radius:4px}
+
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(9,19,22,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  transform:translateY(-100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);
+}
+nav.show{transform:translateY(0)}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:26px}
+.nav-mark{font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:1.05rem;
+  background:linear-gradient(100deg,var(--coral),var(--pulse));-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.nav-links{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  color:var(--slate);text-decoration:none;font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:8px 12px;border-radius:8px;
+  white-space:nowrap;transition:color .25s,background .25s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--pulse);background:rgba(55,224,176,.08)}
+
+/* ---------- HERO ---------- */
+header.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:90px 0 60px;overflow:hidden}
+#synapse{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.5}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 80% 60% at 30% 40%,transparent,rgba(9,19,22,.55))}
+.hero .wrap{position:relative;z-index:2}
+.hero-tag{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:34px}
+.hero-tag .chip{border:1px solid var(--line);border-radius:999px;padding:7px 15px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate)}
+.hero h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.6rem,8vw,6.2rem);line-height:.98;letter-spacing:-.02em;max-width:14ch}
+.hero h1 em{font-style:italic;font-weight:400;background:linear-gradient(100deg,var(--coral),var(--pulse));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lede{margin-top:30px;max-width:54ch;font-size:clamp(1.05rem,2vw,1.3rem);color:var(--paper-dim)}
+.hero .guiding{margin-top:42px;border-left:2px solid var(--pulse);padding:6px 0 6px 22px;max-width:62ch}
+.hero .guiding span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--pulse);display:block;margin-bottom:8px}
+.hero .guiding p{font-family:'Fraunces',serif;font-size:clamp(1.1rem,2.4vw,1.5rem);font-style:italic;line-height:1.4}
+.scrollcue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--slate);
+  text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px}
+.scrollcue .bar{width:1px;height:46px;background:linear-gradient(var(--pulse),transparent);animation:drop 2.4s ease-in-out infinite}
+@keyframes drop{0%{opacity:0;transform:scaleY(0);transform-origin:top}40%{opacity:1;transform:scaleY(1)}100%{opacity:0;transform:scaleY(1);transform-origin:bottom}}
+
+/* ---------- SECTION SHELL ---------- */
+section{position:relative;padding:104px 0;border-top:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:14px}
+.sec-head .num{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--pulse)}
+.sec-title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:-.01em;line-height:1.05}
+.sec-intro{max-width:60ch;color:var(--paper-dim);margin-top:18px;font-size:1.05rem}
+
+/* ---------- OBJECTIVES ---------- */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--line);margin-top:48px;border:1px solid var(--line)}
+.obj{background:var(--ink);padding:34px 30px;transition:background .4s ease}
+.obj:hover{background:var(--ink-soft)}
+.obj .o-num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--pulse);letter-spacing:.1em}
+.obj .o-line{width:26px;height:2px;background:var(--coral);margin:16px 0 18px;transition:width .4s ease}
+.obj:hover .o-line{width:60px}
+.obj p{font-size:1.02rem}
+
+/* ---------- PREP ---------- */
+.prep-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
+.prep-card{background:var(--paper);color:var(--ink);border-radius:18px;padding:30px 28px;
+  display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease}
+.prep-card:hover{transform:translateY(-6px);box-shadow:0 24px 50px -20px rgba(0,0,0,.6)}
+.prep-card .ptype{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--coral-dim)}
+.prep-card h4{font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;line-height:1.2}
+.prep-card .meta{font-size:.86rem;color:#5d6b66;line-height:1.5;font-family:'IBM Plex Mono',monospace}
+.prep-card a{margin-top:auto;display:inline-flex;align-items:center;gap:8px;color:var(--ink);
+  font-weight:600;font-size:.92rem;text-decoration:none;border-bottom:2px solid var(--pulse-dim);
+  padding-bottom:3px;width:fit-content;transition:gap .3s ease}
+.prep-card a:hover{gap:14px}
+.prep-card .glyph{position:absolute;top:-20px;right:-10px;font-family:'Fraunces',serif;font-size:9rem;font-weight:900;color:rgba(13,27,30,.05);line-height:1;user-select:none}
+.video-feature{grid-column:1/-1;background:var(--ink-deep);border:1px solid var(--line);border-radius:22px;
+  overflow:hidden;display:grid;grid-template-columns:1fr 1.4fr;min-height:320px}
+.video-meta{padding:38px 34px;display:flex;flex-direction:column;gap:14px}
+.video-meta .ptype{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--pulse)}
+.video-meta h4{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.3rem,2.6vw,1.7rem);line-height:1.2}
+.video-meta p{color:var(--paper-dim);font-size:.95rem}
+.video-meta a{margin-top:auto;color:var(--pulse);font-family:'IBM Plex Mono',monospace;font-size:.8rem;letter-spacing:.1em;text-decoration:none}
+.video-meta a:hover{text-decoration:underline}
+.video-embed{position:relative;background:#000}
+.video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* ---------- AGENDA ---------- */
+.timeline{margin-top:52px}
+.t-row{display:grid;grid-template-columns:120px 1fr;border-left:2px solid var(--line);transition:border-color .3s}
+.t-row:hover{border-left-color:var(--pulse)}
+.t-time{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--slate);padding:22px 20px 22px 24px;position:relative;white-space:nowrap}
+.t-time::before{content:"";position:absolute;left:-7px;top:28px;width:11px;height:11px;border-radius:50%;
+  background:var(--ink);border:2px solid var(--slate);transition:all .3s}
+.t-row:hover .t-time::before{background:var(--pulse);border-color:var(--pulse);box-shadow:0 0 14px var(--pulse)}
+.t-body{padding:22px 0;border-bottom:1px solid var(--line)}
+.t-body h5{font-weight:600;font-size:1.08rem;margin-bottom:2px}
+.t-body .dur{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--pulse-dim);letter-spacing:.1em}
+.t-row.break .t-body h5{color:var(--coral)}
+.t-row.break .t-time::before{border-color:var(--coral)}
+
+/* ---------- DEBRIEF ---------- */
+.debrief{margin-top:48px;display:grid;gap:18px}
+.q-card{background:var(--ink-soft);border:1px solid var(--line);border-radius:16px;padding:28px 30px;
+  display:flex;gap:22px;align-items:flex-start;transition:transform .3s,border-color .3s}
+.q-card:hover{transform:translateX(8px);border-color:var(--pulse-dim)}
+.q-card .qmark{font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:2.4rem;color:var(--pulse);line-height:1}
+.q-card p{font-size:1.12rem;font-family:'Fraunces',serif;line-height:1.4}
+
+/* ---------- SCENARIOS : full-width facilitation panels ---------- */
+#scenarios{padding-bottom:0}
+.scen-panel{
+  border-top:1px solid var(--line);
+  padding:90px 0;
+  position:relative;
+}
+.scen-panel:nth-child(even of .scen-panel){background:var(--ink-deep)}
+.scen-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(34px,6vw,80px);align-items:start}
+.scen-left{position:sticky;top:100px}
+.scen-no-big{
+  font-family:'Fraunces',serif;font-weight:900;font-size:clamp(4rem,10vw,8rem);line-height:.9;
+  color:transparent;-webkit-text-stroke:1.5px rgba(55,224,176,.4);user-select:none;
+}
+.scen-kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--coral);margin-top:18px;display:block}
+.scen-title{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1.1;margin-top:10px}
+.scen-case{margin-top:26px;font-size:clamp(1.05rem,1.8vw,1.2rem);color:var(--paper-dim);max-width:46ch}
+.scen-quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.15rem,2.2vw,1.5rem);line-height:1.45;
+  border-left:2px solid var(--coral);padding-left:20px;margin-top:26px;max-width:42ch}
+.scen-quote cite{display:block;font-family:'IBM Plex Mono',monospace;font-style:normal;font-size:.72rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-top:12px}
+.scen-tools{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;align-items:center}
+.timer-chip{
+  display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:999px;
+  padding:10px 18px;background:none;color:var(--paper);cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;font-size:.85rem;letter-spacing:.08em;transition:border-color .3s,background .3s;
+}
+.timer-chip:hover{border-color:var(--pulse)}
+.timer-chip.running{border-color:var(--pulse);background:rgba(55,224,176,.08)}
+.timer-chip.done{border-color:var(--coral);color:var(--coral)}
+.timer-chip .dot{width:8px;height:8px;border-radius:50%;background:var(--slate);transition:background .3s}
+.timer-chip.running .dot{background:var(--pulse);animation:blink 1s infinite}
+.timer-chip.done .dot{background:var(--coral)}
+@keyframes blink{50%{opacity:.25}}
+.timer-hint{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--slate);letter-spacing:.1em}
+
+/* question deck */
+.deck{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:rgba(20,42,46,.45)}
+.deck-head{display:flex;justify-content:space-between;align-items:center;padding:20px 26px;border-bottom:1px solid var(--line)}
+.deck-head .eyebrow{color:var(--slate);letter-spacing:.22em;font-size:10px}
+.deck-prog{display:flex;gap:7px}
+.deck-prog .pd{width:22px;height:4px;border-radius:2px;background:var(--line);transition:background .35s}
+.deck-prog .pd.lit{background:var(--pulse)}
+.dq{
+  padding:0 26px;max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .55s cubic-bezier(.2,.8,.2,1),opacity .45s ease,padding .45s ease;
+  border-bottom:1px solid transparent;
+}
+.dq.open{max-height:220px;opacity:1;padding:24px 26px;border-bottom-color:var(--line)}
+.dq .dq-in{display:flex;gap:18px;align-items:flex-start}
+.dq .dq-n{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--pulse);padding-top:6px;white-space:nowrap}
+.dq p{font-family:'Fraunces',serif;font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.4}
+.deck-foot{padding:20px 26px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.reveal-btn{
+  background:var(--pulse);color:var(--ink);border:none;border-radius:999px;padding:13px 26px;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;font-weight:500;transition:transform .25s,background .3s;
+}
+.reveal-btn:hover{transform:translateY(-2px)}
+.reveal-btn:disabled{background:var(--ink-soft);color:var(--slate);cursor:default;transform:none;border:1px solid var(--line)}
+.deck-reset{background:none;border:none;color:var(--slate);font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:8px}
+.deck-reset:hover{color:var(--paper)}
+.deck-done{font-family:'Fraunces',serif;font-style:italic;color:var(--pulse);font-size:1rem;display:none}
+.deck.complete .deck-done{display:inline}
+
+/* ---------- THEMES ---------- */
+.themes{margin-top:52px;display:flex;flex-wrap:wrap;gap:14px}
+.theme-pill{border:1px solid var(--line);border-radius:14px;padding:18px 24px;
+  font-family:'Fraunces',serif;font-size:1.15rem;position:relative;overflow:hidden;
+  transition:color .35s;flex:1 1 240px;z-index:0}
+.theme-pill .fill{position:absolute;inset:0;background:linear-gradient(120deg,var(--coral),var(--pulse));
+  transform:translateY(101%);transition:transform .45s cubic-bezier(.3,.7,.2,1);z-index:-1}
+.theme-pill:hover{color:var(--ink)}
+.theme-pill:hover .fill{transform:translateY(0)}
+.theme-pill .tnum{font-family:'IBM Plex Mono',monospace;font-size:.7rem;display:block;margin-bottom:6px;letter-spacing:.2em;color:var(--pulse-dim);transition:color .35s}
+.theme-pill:hover .tnum{color:var(--ink)}
+
+/* ---------- WRAP-UP ---------- */
+.wrapup{background:var(--paper);color:var(--ink);border-radius:28px;margin-top:52px;padding:clamp(34px,6vw,64px)}
+.wrapup .eyebrow{color:var(--coral-dim)}
+.wrapup h3{font-family:'Fraunces',serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:600;margin:14px 0 10px;line-height:1.1}
+.builder{font-family:'Fraunces',serif;font-size:clamp(1.4rem,4vw,2.4rem);line-height:1.5;margin-top:34px;font-weight:500}
+.builder .blank{display:inline-block;min-width:160px;border-bottom:3px solid var(--coral);text-align:center;font-style:italic;color:var(--coral-dim);padding:0 8px}
+.builder .blank.pulse{border-bottom-color:var(--pulse-dim);color:var(--pulse-dim)}
+.binputs{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px}
+.binputs label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:8px;color:#5d6b66}
+.binputs input{width:100%;background:#fff;border:1.5px solid var(--line-dark);border-radius:12px;
+  padding:14px 16px;font-family:'Space Grotesk',sans-serif;font-size:1rem;color:var(--ink);transition:border-color .3s}
+.binputs input:focus{outline:none;border-color:var(--pulse-dim);box-shadow:0 0 0 3px rgba(31,174,135,.15)}
+.wall{margin-top:34px}
+.wall-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.wall-head .eyebrow{color:#7d8a85}
+.add-btn{background:var(--ink);color:var(--paper);border:none;border-radius:999px;padding:13px 26px;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;transition:transform .25s,background .3s}
+.add-btn:hover{transform:translateY(-2px);background:var(--coral-dim)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.belief{background:#fff;border:1px solid var(--line-dark);border-radius:14px;padding:18px 20px;font-size:.98rem;animation:pop .4s cubic-bezier(.2,.9,.3,1.2)}
+.belief .b-for{color:var(--pulse-dim);font-weight:600}
+.belief .b-not{color:var(--coral-dim);font-weight:600}
+.belief .b-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#9aa49f;display:block;margin-top:10px}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:scale(1)}}
+.empty-note{font-family:'IBM Plex Mono',monospace;font-size:.85rem;color:#9aa49f;grid-column:1/-1;padding:20px 0}
+
+/* ---------- FOOTER ---------- */
+footer{padding:70px 0 50px;border-top:1px solid var(--line);text-align:center}
+footer .fmark{font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:1.6rem;
+  background:linear-gradient(100deg,var(--coral),var(--pulse));-webkit-background-clip:text;background-clip:text;color:transparent}
+footer p{color:var(--slate);font-family:'IBM Plex Mono',monospace;font-size:.8rem;letter-spacing:.1em;margin-top:14px}
+
+/* ---------- LAND ACKNOWLEDGEMENT ---------- */
+#land{background:var(--ink-deep);padding:104px 0}
+.land-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:start}
+.land-territory{max-width:54ch}
+.land-territory blockquote{
+  font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.2rem,2.6vw,1.75rem);
+  line-height:1.45;margin-top:24px;
+  border-left:3px solid var(--pulse);padding-left:24px;
+}
+.land-territory blockquote .nation{
+  display:block;margin-top:16px;font-family:'IBM Plex Mono',monospace;font-style:normal;
+  font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--pulse-dim);
+}
+.land-divider{width:1px;background:var(--line);align-self:stretch;display:none}
+.land-right{}
+.land-vision{margin-top:10px}
+.land-vision h4{
+  font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.1rem,2vw,1.4rem);
+  margin-top:28px;margin-bottom:10px;
+}
+.land-vision p{color:var(--paper-dim);font-size:1rem;line-height:1.65;max-width:46ch}
+.values-list{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.values-list li{
+  padding:18px 24px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:16px;
+  font-family:'Fraunces',serif;font-size:1.08rem;
+  transition:background .35s,padding-left .35s;cursor:default;
+}
+.values-list li:last-child{border-bottom:none}
+.values-list li:hover{background:rgba(55,224,176,.06);padding-left:34px}
+.values-list li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--coral);flex-shrink:0;transition:background .35s}
+.values-list li:hover::before{background:var(--pulse)}
+@media (max-width:780px){.land-inner{grid-template-columns:1fr}}
+
+/* reveal-on-scroll */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:880px){
+  .scen-layout{grid-template-columns:1fr}
+  .scen-left{position:static}
+  .video-feature{grid-template-columns:1fr}
+  .video-embed{aspect-ratio:16/9}
+}
+@media (max-width:640px){
+  .t-row{grid-template-columns:96px 1fr}
+  .binputs,.prep-grid{grid-template-columns:1fr}
+  .hero h1{font-size:clamp(2.4rem,11vw,3.4rem)}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Section navigation">
+  <div class="nav-in">
+    <span class="nav-mark">OSOT 551 · AI &amp; OT</span>
+    <div class="nav-links">
+      <a href="#land">Land</a>
+      <a href="#agenda">Agenda</a>
+      <a href="#objectives">Objectives</a>
+      <a href="#prep">Prep</a>
+      <a href="#debrief">Debrief</a>
+      <a href="#scenarios">Scenarios</a>
+      <a href="#themes">Themes</a>
+      <a href="#wrapup">Wrap-up</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="synapse" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-tag reveal">
+      <span class="chip">OSOT 551 · Seminar</span>
+      <span class="chip">Master of Occupational Therapy</span>
+      <span class="chip">10:00 – 12:00</span>
+    </div>
+    <h1 class="reveal">When the machine<br>learns to <em>care</em>,<br>what stays human?</h1>
+    <p class="lede reveal">Artificial intelligence in healthcare &amp; occupational therapy — a working session on the line between clinical reasoning and computation, and the role OTs should play in drawing it.</p>
+    <div class="guiding reveal">
+      <span>Guiding question</span>
+      <p>How is AI shaping healthcare delivery, professional decision-making, and OT practice — and what role should occupational therapists play in its integration?</p>
+    </div>
+  </div>
+  <div class="scrollcue"><span>Scroll</span><span class="bar"></span></div>
+</header>
+
+<!-- LAND ACKNOWLEDGEMENT -->
+<section id="land">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">00</span><h2 class="sec-title">Land acknowledgement</h2></div>
+    <div class="land-inner">
+      <div class="land-territory reveal">
+        <blockquote>
+          Our seminar is held on the UBC Point Grey (Vancouver) campus, which sits on the traditional, ancestral, unceded territory of the xʷməθkʷəy̓əm (Musqueam) First Nation.
+          <span class="nation">xʷməθkʷəy̓əm · Musqueam First Nation</span>
+        </blockquote>
+      </div>
+      <div class="land-right reveal">
+        <div class="land-vision">
+          <span class="eyebrow">Vision</span>
+          <p style="margin-top:14px">The Musqueam, a proud and unified people, will as a self-governing nation, work together to ensure enhanced quality of life for all generations of our people to develop a sustainable, self reliant, vibrant community that is built upon the historical and traditional values of our community.</p>
+          <span class="eyebrow" style="display:block;margin-top:28px">Values</span>
+          <ul class="values-list" style="margin-top:14px">
+            <li>Respect</li>
+            <li>Pride</li>
+            <li>Inclusiveness</li>
+            <li>Honour</li>
+            <li>Shared Responsibility</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section id="agenda">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">01</span><h2 class="sec-title">How the two hours run</h2></div>
+    <p class="sec-intro reveal">Two hours, eight movements. Hover any block to find your place.</p>
+    <div class="timeline reveal">
+      <div class="t-row"><div class="t-time">10:00</div><div class="t-body"><h5>Warm-up &amp; ice-breaker</h5><span class="dur">10 min</span></div></div>
+      <div class="t-row"><div class="t-time">10:10</div><div class="t-body"><h5>Land acknowledgement &amp; review learning objectives</h5><span class="dur">5 min</span></div></div>
+      <div class="t-row"><div class="t-time">10:15</div><div class="t-body"><h5>Discussion of pre-session readings &amp; video</h5><span class="dur">20 min</span></div></div>
+      <div class="t-row"><div class="t-time">10:35</div><div class="t-body"><h5>Video discussion — AI, bias &amp; ethics</h5><span class="dur">25 min</span></div></div>
+      <div class="t-row break"><div class="t-time">11:00</div><div class="t-body"><h5>Break</h5><span class="dur">10 min</span></div></div>
+      <div class="t-row"><div class="t-time">11:10</div><div class="t-body"><h5>Small-group scenarios &amp; discussion</h5><span class="dur">45 min</span></div></div>
+      <div class="t-row"><div class="t-time">11:55</div><div class="t-body"><h5>Wrap-up</h5><span class="dur">5 min</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OBJECTIVES -->
+<section id="objectives">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">02</span><h2 class="sec-title">Learning objectives</h2></div>
+    <p class="sec-intro reveal">By the end of the session, each of us should be able to hold these five capabilities — not as facts to recall, but as lenses to think with.</p>
+    <div class="obj-grid reveal">
+      <div class="obj"><span class="o-num">01</span><div class="o-line"></div><p>Describe current applications of AI within healthcare and rehabilitation.</p></div>
+      <div class="obj"><span class="o-num">02</span><div class="o-line"></div><p>Critically examine ethical concerns — bias, privacy, accountability, and equity.</p></div>
+      <div class="obj"><span class="o-num">03</span><div class="o-line"></div><p>Explore tensions between AI-assisted practice and OT clinical reasoning.</p></div>
+      <div class="obj"><span class="o-num">04</span><div class="o-line"></div><p>Analyze the benefits and limitations of AI as a treatment and rehabilitation tool.</p></div>
+      <div class="obj"><span class="o-num">05</span><div class="o-line"></div><p>Consider how OTs can contribute to ethical, client-centred AI implementation.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PREP -->
+<section id="prep">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">03</span><h2 class="sec-title">Before you arrive</h2></div>
+    <p class="sec-intro reveal">Come ready to argue with the material. Two readings and one video — the discussion assumes you've met them.</p>
+    <div class="prep-grid reveal">
+      <div class="prep-card">
+        <span class="glyph">1</span>
+        <span class="ptype">Required reading · OT lens</span>
+        <h4>From competition to collaboration</h4>
+        <p class="meta">Rowe M, Ward G. Artificial intelligence in occupational therapy. Br J Occup Ther. 2025;89(1):3–5.</p>
+        <a href="https://doi.org/10.1177/03080226251325325" target="_blank" rel="noopener">Open via DOI ↗</a>
+      </div>
+      <div class="prep-card">
+        <span class="glyph">2</span>
+        <span class="ptype">Required reading · Practice guide</span>
+        <h4>Interior Health AI Information Guide</h4>
+        <p class="meta">A regional health authority's working guidance on AI tools in care delivery.</p>
+        <a href="https://interiorhealth.soutronglobal.net/portal/Default/en-US/Custom/InformationGuideAIsearch" target="_blank" rel="noopener">Open the guide ↗</a>
+      </div>
+      <div class="video-feature">
+        <div class="video-meta">
+          <span class="ptype">Pre-session video</span>
+          <h4>Optimizing your occupational therapy with ChatGPT</h4>
+          <p>Watch as a practitioner, not a spectator — note where you'd trust it, and where you'd hesitate. Both reactions are data for our discussion.</p>
+          <a href="https://www.youtube.com/watch?v=g3_4T3bAyVQ" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+        </div>
+        <div class="video-embed">
+          <iframe src="https://www.youtube-nocookie.com/embed/g3_4T3bAyVQ" title="Optimizing Your Occupational Therapy with ChatGPT" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEBRIEF -->
+<section id="debrief">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">04</span><h2 class="sec-title">Material debrief</h2></div>
+    <p class="sec-intro reveal">Three openers to surface where everyone's actually starting from.</p>
+    <div class="debrief reveal">
+      <div class="q-card"><span class="qmark">?</span><p>What idea, concern, or question stood out most to you across the readings and video?</p></div>
+      <div class="q-card"><span class="qmark">?</span><p>Has engaging with these materials changed how you think about AI in healthcare or OT — why or why not?</p></div>
+      <div class="q-card"><span class="qmark">?</span><p>Where do you currently use AI in your own academic, clinical, or personal life?</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="scenarios">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">05</span><h2 class="sec-title">Small-group scenarios</h2></div>
+    <p class="sec-intro reveal">Three cases, three frictions. Each group takes one. Read the case aloud, start the timer, then reveal the questions one at a time — let each one breathe before moving on.</p>
+  </div>
+
+  <!-- Scenario 1 -->
+  <div class="scen-panel reveal">
+    <div class="wrap scen-layout">
+      <div class="scen-left">
+        <div class="scen-no-big">01</div>
+        <span class="scen-kicker">Case file</span>
+        <h3 class="scen-title">AI &amp; clinical reasoning</h3>
+        <p class="scen-case">A new-graduate OT uses ChatGPT to generate goals, interventions, outcome measures, and a full treatment plan — <strong>before</strong> fully exploring the client's occupational history or priorities.</p>
+        <div class="scen-tools">
+          <button class="timer-chip" data-timer="900"><span class="dot"></span><span class="t-label">15:00 group timer</span></button>
+          <span class="timer-hint">click to start / reset</span>
+        </div>
+      </div>
+      <div class="deck" data-deck>
+        <div class="deck-head">
+          <span class="eyebrow">Discussion deck</span>
+          <div class="deck-prog"></div>
+        </div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q1</span><p>What concerns arise?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q2</span><p>At what point does AI support become dependence?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q3</span><p>What aspects of clinical reasoning are being delegated?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q4</span><p>Would this still be considered client-centred practice?</p></div></div>
+        <div class="deck-foot">
+          <button class="reveal-btn">Reveal first question</button>
+          <button class="deck-reset">Reset</button>
+          <span class="deck-done">All questions on the table — discuss.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenario 2 -->
+  <div class="scen-panel reveal">
+    <div class="wrap scen-layout">
+      <div class="scen-left">
+        <div class="scen-no-big">02</div>
+        <span class="scen-kicker">Case file</span>
+        <h3 class="scen-title">AI &amp; resource allocation</h3>
+        <p class="scen-case">A health authority uses AI to predict which clients are most likely to benefit from intensive rehabilitation. Those predicted to have poorer outcomes <strong>receive fewer services</strong>.</p>
+        <div class="scen-tools">
+          <button class="timer-chip" data-timer="900"><span class="dot"></span><span class="t-label">15:00 group timer</span></button>
+          <span class="timer-hint">click to start / reset</span>
+        </div>
+      </div>
+      <div class="deck" data-deck>
+        <div class="deck-head">
+          <span class="eyebrow">Discussion deck</span>
+          <div class="deck-prog"></div>
+        </div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q1</span><p>What ethical concerns emerge?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q2</span><p>Could this contribute to occupational injustice?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q3</span><p>Who decides what counts as a successful outcome?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q4</span><p>What populations may be disproportionately affected?</p></div></div>
+        <div class="deck-foot">
+          <button class="reveal-btn">Reveal first question</button>
+          <button class="deck-reset">Reset</button>
+          <span class="deck-done">All questions on the table — discuss.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenario 3 -->
+  <div class="scen-panel reveal">
+    <div class="wrap scen-layout">
+      <div class="scen-left">
+        <div class="scen-no-big">03</div>
+        <span class="scen-kicker">Case file</span>
+        <h3 class="scen-title">AI &amp; the therapeutic relationship</h3>
+        <blockquote class="scen-quote">“Honestly, I've been using ChatGPT more than therapy lately. It listens whenever I need it, remembers what I tell it, and gives me advice right away.”
+          <cite>— a client, to their OT</cite>
+        </blockquote>
+        <p class="scen-case">The client reports finding AI more helpful and accessible than their healthcare providers.</p>
+        <div class="scen-tools">
+          <button class="timer-chip" data-timer="900"><span class="dot"></span><span class="t-label">15:00 group timer</span></button>
+          <span class="timer-hint">click to start / reset</span>
+        </div>
+      </div>
+      <div class="deck" data-deck>
+        <div class="deck-head">
+          <span class="eyebrow">Discussion deck</span>
+          <div class="deck-prog"></div>
+        </div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q1</span><p>Why might a client prefer AI over a healthcare professional?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q2</span><p>What needs is the AI meeting?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q3</span><p>What needs might it be unable to meet?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q4</span><p>Does therapeutic rapport require a human relationship?</p></div></div>
+        <div class="dq"><div class="dq-in"><span class="dq-n">Q5</span><p>Should OTs view AI as a competitor, a collaborator — or something else?</p></div></div>
+        <div class="deck-foot">
+          <button class="reveal-btn">Reveal first question</button>
+          <button class="deck-reset">Reset</button>
+          <span class="deck-done">All questions on the table — discuss.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THEMES -->
+<section id="themes">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">06</span><h2 class="sec-title">Key themes</h2></div>
+    <p class="sec-intro reveal">The threads we'll keep returning to. Hover each to bring it forward.</p>
+    <div class="themes reveal">
+      <div class="theme-pill"><div class="fill"></div><span class="tnum">Theme 01</span>What is AI, and how is it used in healthcare?</div>
+      <div class="theme-pill"><div class="fill"></div><span class="tnum">Theme 02</span>AI as a treatment &amp; rehabilitation tool</div>
+      <div class="theme-pill"><div class="fill"></div><span class="tnum">Theme 03</span>Support vs. replacement for clinical reasoning</div>
+      <div class="theme-pill"><div class="fill"></div><span class="tnum">Theme 04</span>Ethics, bias, accountability &amp; privacy</div>
+      <div class="theme-pill"><div class="fill"></div><span class="tnum">Theme 05</span>Equity, access &amp; occupational justice</div>
+    </div>
+  </div>
+</section>
+
+<!-- WRAP-UP -->
+<section id="wrapup">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">07</span><h2 class="sec-title">Wrap-up activity</h2></div>
+    <div class="wrapup reveal">
+      <span class="eyebrow">Complete the sentence</span>
+      <h3>Where do you draw the line?</h3>
+      <p class="builder">AI should be used for
+        <span class="blank pulse" id="liveFor">______</span>
+        but <em>not</em> for
+        <span class="blank" id="liveNot">______</span>.
+      </p>
+      <div class="binputs">
+        <div>
+          <label for="forIn">AI should be used for…</label>
+          <input id="forIn" type="text" placeholder="e.g. documentation drafts" maxlength="60" autocomplete="off">
+        </div>
+        <div>
+          <label for="notIn">…but not for</label>
+          <input id="notIn" type="text" placeholder="e.g. deciding who gets care" maxlength="60" autocomplete="off">
+        </div>
+      </div>
+      <div class="wall">
+        <div class="wall-head">
+          <span class="eyebrow">The room's responses</span>
+          <button class="add-btn" id="addBelief">Add to the wall +</button>
+        </div>
+        <div class="cards" id="wall">
+          <p class="empty-note">No responses yet — be the first to draw your line.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fmark">From competition to collaboration.</div>
+    <p>OSOT 551 · AI in Healthcare &amp; Occupational Therapy · Seminar Companion</p>
+  </div>
+</footer>
+
+<script>
+/* ---- nav: appear after hero, highlight active section ---- */
+const nav=document.getElementById('nav');
+const hero=document.querySelector('.hero');
+new IntersectionObserver(([e])=>{nav.classList.toggle('show',!e.isIntersecting)},{threshold:.05}).observe(hero);
+const navLinks=[...document.querySelectorAll('.nav-links a')];
+const secObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+['land','agenda','objectives','prep','debrief','scenarios','themes','wrapup'].forEach(id=>{
+  const el=document.getElementById(id);if(el)secObs.observe(el);
+});
+
+/* ---- reveal on scroll ---- */
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---- question decks: progressive reveal ---- */
+document.querySelectorAll('[data-deck]').forEach(deck=>{
+  const qs=[...deck.querySelectorAll('.dq')];
+  const btn=deck.querySelector('.reveal-btn');
+  const reset=deck.querySelector('.deck-reset');
+  const prog=deck.querySelector('.deck-prog');
+  qs.forEach(()=>{const d=document.createElement('span');d.className='pd';prog.appendChild(d)});
+  const pds=[...prog.children];
+  let i=0;
+  function paint(){
+    pds.forEach((p,k)=>p.classList.toggle('lit',k<i));
+    if(i===0){btn.textContent='Reveal first question';btn.disabled=false;deck.classList.remove('complete');}
+    else if(i<qs.length){btn.textContent='Reveal next question ('+i+'/'+qs.length+')';btn.disabled=false;deck.classList.remove('complete');}
+    else{btn.textContent='All revealed';btn.disabled=true;deck.classList.add('complete');}
+  }
+  btn.addEventListener('click',()=>{
+    if(i<qs.length){qs[i].classList.add('open');i++;paint();
+      qs[i-1].scrollIntoView({behavior:'smooth',block:'nearest'});}
+  });
+  reset.addEventListener('click',()=>{qs.forEach(q=>q.classList.remove('open'));i=0;paint();});
+  paint();
+});
+
+/* ---- group timers ---- */
+document.querySelectorAll('[data-timer]').forEach(chip=>{
+  const total=parseInt(chip.dataset.timer,10);
+  const label=chip.querySelector('.t-label');
+  const base=label.textContent;
+  let left=total,id=null;
+  function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+  chip.addEventListener('click',()=>{
+    if(id){clearInterval(id);id=null;left=total;chip.classList.remove('running','done');label.textContent=base;return;}
+    chip.classList.add('running');chip.classList.remove('done');
+    label.textContent=fmt(left)+' · running';
+    id=setInterval(()=>{
+      left--;
+      if(left<=0){clearInterval(id);id=null;left=total;
+        chip.classList.remove('running');chip.classList.add('done');
+        label.textContent="Time's up — share back";
+      } else {label.textContent=fmt(left)+' · running';}
+    },1000);
+  });
+});
+
+/* ---- live sentence + wall ---- */
+const forIn=document.getElementById('forIn'),notIn=document.getElementById('notIn');
+const liveFor=document.getElementById('liveFor'),liveNot=document.getElementById('liveNot');
+const wall=document.getElementById('wall');
+function sync(){
+  liveFor.textContent=forIn.value.trim()||'______';
+  liveNot.textContent=notIn.value.trim()||'______';
+}
+forIn.addEventListener('input',sync);notIn.addEventListener('input',sync);
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+document.getElementById('addBelief').addEventListener('click',()=>{
+  const f=forIn.value.trim(),n=notIn.value.trim();
+  if(!f&&!n)return;
+  const empty=wall.querySelector('.empty-note');if(empty)empty.remove();
+  const el=document.createElement('div');el.className='belief';
+  el.innerHTML='AI should be used for <span class="b-for">'+esc(f||'…')+'</span> but not for <span class="b-not">'+esc(n||'…')+'</span><span class="b-lbl">— a voice in the room</span>';
+  wall.prepend(el);
+  forIn.value='';notIn.value='';sync();forIn.focus();
+});
+
+/* ---- hero synapse canvas ---- */
+(function(){
+  const c=document.getElementById('synapse'),x=c.getContext('2d');
+  let w,h,nodes=[],raf;
+  const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function size(){w=c.width=c.offsetWidth*devicePixelRatio;h=c.height=c.offsetHeight*devicePixelRatio;}
+  function init(){
+    size();nodes=[];const n=Math.min(70,Math.floor(w*h/26000));
+    for(let i=0;i<n;i++){nodes.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.8+.6});}
+  }
+  function frame(loop){
+    x.clearRect(0,0,w,h);
+    for(let i=0;i<nodes.length;i++){
+      const a=nodes[i];
+      if(loop){a.x+=a.vx;a.y+=a.vy;
+        if(a.x<0||a.x>w)a.vx*=-1;if(a.y<0||a.y>h)a.vy*=-1;}
+      for(let j=i+1;j<nodes.length;j++){
+        const b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy),max=150*devicePixelRatio;
+        if(d<max){
+          const o=(1-d/max)*.5;
+          const grad=x.createLinearGradient(a.x,a.y,b.x,b.y);
+          grad.addColorStop(0,'rgba(55,224,176,'+o+')');
+          grad.addColorStop(1,'rgba(255,122,89,'+(o*.6)+')');
+          x.strokeStyle=grad;x.lineWidth=devicePixelRatio*.6;
+          x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();
+        }
+      }
+      x.beginPath();x.arc(a.x,a.y,a.r*devicePixelRatio,0,7);
+      x.fillStyle='rgba(55,224,176,.9)';x.fill();
+    }
+    if(loop)raf=requestAnimationFrame(()=>frame(true));
+  }
+  init();
+  frame(!reduce);
+  window.addEventListener('resize',()=>{cancelAnimationFrame(raf);init();frame(!reduce);});
+})();
+</script>
+</body>
+</html>
