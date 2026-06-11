@@ -313,9 +313,9 @@ footer p{color:var(--slate);font-family:'IBM Plex Mono',monospace;font-size:.8re
     <span class="nav-mark">OSOT 551 · AI &amp; OT</span>
     <div class="nav-links">
       <a href="#land">Land</a>
+      <a href="#agenda">Agenda</a>
       <a href="#objectives">Objectives</a>
       <a href="#prep">Prep</a>
-      <a href="#agenda">Agenda</a>
       <a href="#debrief">Debrief</a>
       <a href="#scenarios">Scenarios</a>
       <a href="#themes">Themes</a>
@@ -371,10 +371,27 @@ footer p{color:var(--slate);font-family:'IBM Plex Mono',monospace;font-size:.8re
   </div>
 </section>
 
+<!-- AGENDA -->
+<section id="agenda">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="num">01</span><h2 class="sec-title">How the two hours run</h2></div>
+    <p class="sec-intro reveal">Two hours, eight movements. Hover any block to find your place.</p>
+    <div class="timeline reveal">
+      <div class="t-row"><div class="t-time">10:00</div><div class="t-body"><h5>Warm-up &amp; ice-breaker</h5><span class="dur">10 min</span></div></div>
+      <div class="t-row"><div class="t-time">10:10</div><div class="t-body"><h5>Land acknowledgement &amp; review learning objectives</h5><span class="dur">5 min</span></div></div>
+      <div class="t-row"><div class="t-time">10:15</div><div class="t-body"><h5>Discussion of pre-session readings &amp; video</h5><span class="dur">20 min</span></div></div>
+      <div class="t-row"><div class="t-time">10:35</div><div class="t-body"><h5>Video discussion — AI, bias &amp; ethics</h5><span class="dur">25 min</span></div></div>
+      <div class="t-row break"><div class="t-time">11:00</div><div class="t-body"><h5>Break</h5><span class="dur">10 min</span></div></div>
+      <div class="t-row"><div class="t-time">11:10</div><div class="t-body"><h5>Small-group scenarios &amp; discussion</h5><span class="dur">45 min</span></div></div>
+      <div class="t-row"><div class="t-time">11:55</div><div class="t-body"><h5>Wrap-up</h5><span class="dur">5 min</span></div></div>
+    </div>
+  </div>
+</section>
+
 <!-- OBJECTIVES -->
 <section id="objectives">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="num">01</span><h2 class="sec-title">Learning objectives</h2></div>
+    <div class="sec-head reveal"><span class="num">02</span><h2 class="sec-title">Learning objectives</h2></div>
     <p class="sec-intro reveal">By the end of the session, each of us should be able to hold these five capabilities — not as facts to recall, but as lenses to think with.</p>
     <div class="obj-grid reveal">
       <div class="obj"><span class="o-num">01</span><div class="o-line"></div><p>Describe current applications of AI within healthcare and rehabilitation.</p></div>
@@ -389,7 +406,7 @@ footer p{color:var(--slate);font-family:'IBM Plex Mono',monospace;font-size:.8re
 <!-- PREP -->
 <section id="prep">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="num">02</span><h2 class="sec-title">Before you arrive</h2></div>
+    <div class="sec-head reveal"><span class="num">03</span><h2 class="sec-title">Before you arrive</h2></div>
     <p class="sec-intro reveal">Come ready to argue with the material. Two readings and one video — the discussion assumes you've met them.</p>
     <div class="prep-grid reveal">
       <div class="prep-card">
@@ -417,23 +434,6 @@ footer p{color:var(--slate);font-family:'IBM Plex Mono',monospace;font-size:.8re
           <iframe src="https://www.youtube-nocookie.com/embed/g3_4T3bAyVQ" title="Optimizing Your Occupational Therapy with ChatGPT" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- AGENDA -->
-<section id="agenda">
-  <div class="wrap">
-    <div class="sec-head reveal"><span class="num">03</span><h2 class="sec-title">How the two hours run</h2></div>
-    <p class="sec-intro reveal">Two hours, eight movements. Hover any block to find your place.</p>
-    <div class="timeline reveal">
-      <div class="t-row"><div class="t-time">10:00</div><div class="t-body"><h5>Warm-up &amp; ice-breaker</h5><span class="dur">10 min</span></div></div>
-      <div class="t-row"><div class="t-time">10:10</div><div class="t-body"><h5>Land acknowledgement &amp; review learning objectives</h5><span class="dur">5 min</span></div></div>
-      <div class="t-row"><div class="t-time">10:15</div><div class="t-body"><h5>Discussion of pre-session readings &amp; video</h5><span class="dur">20 min</span></div></div>
-      <div class="t-row"><div class="t-time">10:35</div><div class="t-body"><h5>Video discussion — AI, bias &amp; ethics</h5><span class="dur">25 min</span></div></div>
-      <div class="t-row break"><div class="t-time">11:00</div><div class="t-body"><h5>Break</h5><span class="dur">10 min</span></div></div>
-      <div class="t-row"><div class="t-time">11:10</div><div class="t-body"><h5>Small-group scenarios &amp; discussion</h5><span class="dur">45 min</span></div></div>
-      <div class="t-row"><div class="t-time">11:55</div><div class="t-body"><h5>Wrap-up</h5><span class="dur">5 min</span></div></div>
     </div>
   </div>
 </section>
@@ -626,7 +626,7 @@ const secObs=new IntersectionObserver(es=>{
     }
   });
 },{rootMargin:'-40% 0px -55% 0px'});
-['land','objectives','prep','agenda','debrief','scenarios','themes','wrapup'].forEach(id=>{
+['land','agenda','objectives','prep','debrief','scenarios','themes','wrapup'].forEach(id=>{
   const el=document.getElementById(id);if(el)secObs.observe(el);
 });
 
